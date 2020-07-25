@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Uniqueness</title>
+    </head>
+    <body>
+        <h3>Input:</h3>
+        <input type="file" id="inputfile"> 
+        <br>
+        <h3>Output:</h3>
+        <b>First Occurence: </b>
+        <span id="output"></span> 
+
+    <script type="text/javascript">
+        document.getElementById('inputfile').addEventListener('change', function() {
+            var fileRead=new FileReader()
+            fileRead.readAsText(this.files[0])
+            fileRead.onload=function() { 
+                firstOccRes = firstOccurence(fileRead.result)
+                document.getElementById('output').textContent = firstOccRes
+            }
+        })
+
+        const firstOccurence = words => words.split('').filter((item, position, word) => word.indexOf(item) === position).join('')
+
+    </script>
+    </body>
+</html>
