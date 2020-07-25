@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Max Profit</title>
+    </head>
+    <body>
+        <h3>Input:</h3>
+        <input type="file" id="inputfile"> 
+        <br>
+        <h3>Output:</h3>
+        <span id="output"></span> 
+
+    <script type="text/javascript">
+        document.getElementById('inputfile').addEventListener('change', function() {
+            var fileRead=new FileReader()
+            fileRead.readAsText(this.files[0])
+            fileRead.onload=function() { 
+                profitMaxnya = maxDifference(fileRead.result)
+                document.getElementById('output').textContent = profitMaxnya.finalDif + profitMaxnya.finalMin + profitMaxnya.finalMax
+            }
+        })
+
+        const maxDifference = (bitcoin) => {
+            const bitcoinArr = bitcoin.split(" ").map(i => parseInt(i))
+            let maxDif = null, min = null, max = null
+    
+            for (let i = 0; i < bitcoinArr.length; i++) {
+                for (let j = i + 1; j < bitcoinArr.length; j++) {
+                    if (bitcoinArr[i] < bitcoinArr[j] && maxDif < (bitcoinArr[j] - bitcoinArr[i])) {
+                        maxDif = bitcoinArr[j] - bitcoinArr[i]
+                        min = i + 1
+                        max = j + 1
+                    }
+                }
+            }
+            let res = {
+                finalDif: maxDif === null ? `the maximum profit Jacky can make is: 0` : `the maximum profit Jacky can make is: $${maxDif},`,
+                finalMin: min === null ? '' : ` he will buy at ${min}th hour`,
+                finalMax: max === null ? '' : ` and he will sell at ${max}th hour`
+            }
+            return res     
+        }
+    </script>
+    </body>
+</html>
