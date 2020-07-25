@@ -9,7 +9,10 @@
         <br>
         <h3>Output:</h3>
         <b>First Occurence: </b>
-        <span id="output"></span> 
+        <span id="output"></span>
+        <br> 
+        <b>Lexicographic Order: </b>
+        <span id="output-lex"></span>
 
     <script type="text/javascript">
         document.getElementById('inputfile').addEventListener('change', function() {
@@ -17,11 +20,43 @@
             fileRead.readAsText(this.files[0])
             fileRead.onload=function() { 
                 firstOccRes = firstOccurence(fileRead.result)
+                lexRes = lexicographic(fileRead.result)
                 document.getElementById('output').textContent = firstOccRes
+                document.getElementById('output-lex').textContent = lexRes
             }
         })
 
         const firstOccurence = words => words.split('').filter((item, position, word) => word.indexOf(item) === position).join('')
+
+        const lexicographic = (words) => {
+            let count = new Array(26).fill(0)
+            let used = new Array(26)
+            let offset = 97
+            let res = []
+
+            for (let i = 0; i < words.length; i++) {
+                count[words[i].charCodeAt(0) - offset]++
+            }
+
+            for (let i = 0; i < words.length; i++) {
+                let index = words[i].charCodeAt(0) - offset
+                count[index]--
+                if (!used[index]) {
+                    while (
+                        res.length > 0
+                        && res[res.length - 1].charCodeAt(0) - offset > index
+                        && count[res[res.length - 1].charCodeAt(0) - offset] > 0
+                    ) {
+                            used[res[res.length - 1].charCodeAt(0) - offset] = false
+                            res.pop()
+                        }
+                        res.push(words[i])
+                }
+                used[index] = true
+            }
+                return res.join('')
+
+        }
 
     </script>
     </body>
